@@ -5,6 +5,23 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
+import requests
+
+#API infrastructure here
+HOST = 'www.addressforsomething.com/'
+analytics_endpoint = HOST + 'campus_stats'
+predictions_endpoint = HOST + 'predictions'
+
+#response_analytics = requests.get(analytics_endpoint).json()
+#predict_output = requests.get(predictions_endpoint) - do this later
+
+response_analytics = {
+    'CAMPUS 1 Bundoora': {'n_buldi': 5, 'consump': 62, 'sq-ft': 10},
+    'campus 2': {'n_buldi': 8, 'consump': 67, 'sq-ft': 5}
+}
+
+
+#FRONT END INFRASTRUCTURE HERE
 
 st.markdown("""# Welcome to The UNICON Campus Emissions Predictor
 ## Predict carbon emissions at one of Australia's largest universities.
@@ -18,14 +35,15 @@ st.markdown("""
 
 selected_campus = st.selectbox(
     'View Emissions Statistics by Campus',
-    ('Campus 1 - Bundoora', 'Campus 2 - Albury-Wodonga'))
+    (response_analytics.keys()))
 
 st.write('Now viewing metrics for:', selected_campus)
 
+
 col1, col2, col3 = st.columns(3)
-col1.metric("Number of Buildings", "5", "-$1.25")
-col2.metric("Total Square Feet", "XXXX", "0.46%")
-col3.metric("Years of Emissions", "XXXX", "+4.87%")
+col1.metric("Number of Buildings", response_analytics[selected_campus]['n_buldi'], "-$1.25")
+col2.metric("Total Square Feet", response_analytics[selected_campus]['sq-ft'], "0.46%")
+col3.metric("Years of Emissions", response_analytics[selected_campus]['consump'], "+4.87%")
 
 image_url = 'https://images.unsplash.com/photo-1548407260-da850faa41e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1487&q=80'
 
