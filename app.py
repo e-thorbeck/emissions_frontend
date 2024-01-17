@@ -40,6 +40,100 @@ selected_campus = st.selectbox(
     (response_analytics.keys()))
 
 st.write('Now viewing metrics for:', selected_campus)
+emissions = {
+    0: {
+    'year': 2019,
+    'campus_id': "Albury-Wodonga",
+    'n_build': 1,
+    'consumption': 11791.4872,
+    'co2_from_electric': 12498.976432,
+    'gross_floor_area': 1404,
+    'consumption_m2': 8.398495156695157
+    },
+    1: {
+    'year': 2019,
+    'campus_id': "Bundoora",
+    'n_build': 1,
+    'consumption': 137471.8669,
+    'co2_from_electric': 145720.17891400002,
+    'gross_floor_area': 1356939.4800000023,
+    'consumption_m2': 0.1013102418539696
+    },
+    2: {
+    'year': 2020,
+    'campus_id': "Albury-Wodonga",
+    'n_build': 2,
+    'consumption': 196738.6892,
+    'co2_from_electric': 208543.010552,
+    'gross_floor_area': 2649,
+    'consumption_m2': 74.26904084560212
+    },
+    3: {
+    'year': 2020,
+    'campus_id': "Bundoora",
+    'n_build': 3,
+    'consumption': 295182.54150000005,
+    'co2_from_electric': 312893.49399,
+    'gross_floor_area': 4098144.070000001,
+    'consumption_m2': 0.0720283466022706
+    },
+    4: {
+    'year': 2021,
+    'campus_id': "Albury-Wodonga",
+    'n_build': 2,
+    'consumption': 252480.6956,
+    'co2_from_electric': 267629.537336,
+    'gross_floor_area': 2649,
+    'consumption_m2': 95.31170086825216
+    },
+    5: {
+    'year': 2021,
+    'campus_id': "Bundoora",
+    'n_build': 3,
+    'consumption': 371539.5707,
+    'co2_from_electric': 393831.9449420001,
+    'gross_floor_area': 4098144.070000001,
+    'consumption_m2': 0.0906604463761567
+    },
+    6: {
+    'year': 2022,
+    'campus_id': "Albury-Wodonga",
+    'n_build': 2,
+    'consumption': 133575.21360000002,
+    'co2_from_electric': 141589.726416,
+    'gross_floor_area': 2649,
+    'consumption_m2': 50.424769195923
+    },
+    7: {
+    'year': 2022,
+    'campus_id': "Bundoora",
+    'n_build': 2,
+    'consumption': 209331.4921,
+    'co2_from_electric': 221891.381626,
+    'gross_floor_area': 2631655.6500000004,
+    'consumption_m2': 0.079543648539276
+    }
+}
+
+
+emissions_df = pd.DataFrame.from_dict(emissions, orient='index')
+
+# Filter data for the specified campus
+campus_data = emissions_df[emissions_df['campus_id'] == selected_campus]
+
+campus_data['year'] = pd.to_datetime(campus_data['year'], format='%Y')
+
+
+# Create a line plot using Plotly Express
+emissions_fig = px.line(
+    campus_data,
+    x='year',
+    y='consumption_m2',
+    title=f'Emissions By Year - {selected_campus}',
+    labels={'year': 'Year', 'co2_from_electric': 'Co2 Emissions Per Square Foot (KG)'}
+)
+
+
 
 
 col1, col2, col3 = st.columns(3)
@@ -49,12 +143,31 @@ col3.metric("Total Emissions", response_analytics[selected_campus]['consumption'
 
 image_url = 'https://images.unsplash.com/photo-1548407260-da850faa41e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1487&q=80'
 
-col1, col2 = st.columns(2)
+st.plotly_chart(emissions_fig)
+# col2.markdown(f"What Influences Emissions?  Correlation Matrix for Emissions at {selected_campus}")
+# col2.image(image_url)
 
-col1.markdown(f"Emissions per square foot at {selected_campus}")
-col1.image(image_url)
-col2.markdown(f"What Influences Emissions?  Correlation Matrix for Emissions at {selected_campus}")
-col2.image(image_url)
+# Sample Shapley values data (replace this with your actual data)
+shapley_values_data = pd.DataFrame({
+    'feature': ['Feature A', 'Feature B', 'Feature C', 'Feature D'],
+    'shapley_value': [0.2, 0.3, -0.1, 0.4]
+})
+
+# Sample campus data (replace this with your actual data)
+campus_data = pd.DataFrame({
+    'campus_id': [1, 2, 3],
+    'campus_name': ['Campus A', 'Campus B', 'Campus C']
+})
+
+# Streamlit app
+st.title('Shapley Values for Selected Campus')
+
+# Filter Shapley values data based on the selected campus
+filtered_shapley_values = shapley_values_data  # Replace this line with actual filtering logic
+
+# Plot Shapley values
+fig = px.bar(filtered_shapley_values, x='feature', y='shapley_value', title=f'Shapley Values for Campus {selected_campus}')
+st.plotly_chart(fig)
 
 chart_url = 'https://user-images.githubusercontent.com/35371660/105487165-01af3500-5cf3-11eb-9243-c66de968798c.png'
 
@@ -166,7 +279,7 @@ fig.update_layout(
     # margin=dict(l=50, r=50, t=50, b=50),  # Adjust margins as needed
     height=500,  # Adjust height as needed
     # width=800,  # Adjust width as needed
-    yaxis=dict(scaleanchor="x", scaleratio=1),  # Adjust scaleratio to control the distance between lines
+    yaxis_range=[-5,5],  # Adjust scaleratio to control the distance between lines
 )
 
 # Update x-axis tick labels for better readability
