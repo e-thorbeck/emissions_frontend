@@ -1,5 +1,5 @@
 import streamlit as st
-
+import os
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -29,8 +29,8 @@ st.set_page_config(
 # st.markdown(page_bg_img, unsafe_allow_html=True)
 
 #API infrastructure here
-PROD = 1
-HOST = 'http://127.0.0.1:8000/' if PROD==0 else 'https://campusemissionsapi-jmn2evapna-uc.a.run.app/'
+PROD = os.getenv('PROD')
+HOST = 'http://127.0.0.1:8000/' if PROD=='0' else os.getenv('API_HOST')
 analytics_endpoint = HOST + 'campuses_info'
 predictions_endpoint = HOST + 'predictions'
 emissions_endpoint = HOST + 'campuses_year_info'
@@ -259,7 +259,7 @@ def plot_shapley_values(shapley_json, selected_campus):
 
 # Streamlit app
 def main():
-    st.title("Shapley Values Visualization")
+    st.title("What Affects Consumption?")
     st.markdown("Shapley values are a concept from game theory, attributing average marginal contributions to an outcome.  In this case, we look at the average marginal contribution of each factor to our target variable 'consumption'")
 
     # Plot Shapley values
