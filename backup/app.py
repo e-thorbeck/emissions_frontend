@@ -12,25 +12,11 @@ st.set_page_config(
             page_title="UNICON Campus Emissions", # => Quick reference - Streamlit
             page_icon="🐍",
             layout="centered", # wide
-            initial_sidebar_state="auto"
-            ) #
-
-# page_bg_img = f"""
-# <style>
-# [data-testid="stAppViewContainer"] > .main {{
-# background-color: white;
-# color: black;
-# h2: black;
-# h3: black;
-# }}
-# </style>
-# """
-
-# st.markdown(page_bg_img, unsafe_allow_html=True)
+            initial_sidebar_state="auto") #
 
 #API infrastructure here
-PROD = 1
-HOST = 'http://127.0.0.1:8000/' if PROD==0 else 'https://campusemissionsapi-jmn2evapna-uc.a.run.app/'
+PROD = 0
+HOST = 'http://127.0.0.1:8000/' if PROD==0 else ''
 analytics_endpoint = HOST + 'campuses_info'
 predictions_endpoint = HOST + 'predictions'
 emissions_endpoint = HOST + 'campuses_year_info'
@@ -54,7 +40,8 @@ def format_value(value):
 
 st.markdown("""# Welcome to The UNICON Campus Emissions Predictor
 ### Predict carbon emissions at one of Australia's largest universities, and discover what factors influence emissions.
-""")
+This project uses the open-source UNICON dataset from La Trobe University, which has collected emissions data for the past 5 years on a unified platform for the purposes of research and prediction.
+Source: https://www.kaggle.com/datasets/cdaclab/unicon/data""")
 st.markdown("""---""")
 st.sidebar.markdown(f"""
     # Select Your Campus Here
@@ -67,34 +54,11 @@ selected_campus = st.sidebar.selectbox(
 
 st.sidebar.write('Now viewing metrics for:', selected_campus)
 
-st.sidebar.markdown("""
-                    #### Glossary
-                    """)
-st.sidebar.markdown("""
-           This project uses the open-source UNICON dataset from La Trobe University, which has collected emissions data for the past 5 years on a unified platform for the purposes of research and prediction.
-Source: https://www.kaggle.com/datasets/cdaclab/unicon/data
-           """)
-
-st.sidebar.write("""
-#### Financial Data:
-All financial data is displayed in Australian Dollars (AUD), unless otherwise noted.
-                 """)
-
-st.sidebar.write("""
-#### Energy Data:
-All energy consumption data is displayed in units of Kilowatt Hours, unless otherwise noted.
-                 """)
-
-st.sidebar.write("""
-#### Emissions Data:
-All Carbon Emissions are reported in the form of kilograms of Carbon Dioxide (Co2).  The Government of Victoria advises a multiple of 1.06 when converting KWH of electricity into Kilograms of Co2.
-This multiple is a measure of carbon intensity, which is based on all combined sources of power generation for the State of Victoria, and is subject to change.
-Source: https://www.climatechange.vic.gov.au/greenhouse-gas-emissions
-                 """)
-
 st.markdown("""
 ### Section 1 - Analytics
             """)
+
+
 
 
 emissions_df = pd.DataFrame.from_dict(response_emissions, orient='index')
