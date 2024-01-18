@@ -259,7 +259,7 @@ def plot_shapley_values(shapley_json, selected_campus):
 
 # Streamlit app
 def main():
-    st.title("What Affects Consumption?")
+    st.markdown("### What Affects Consumption?")
     st.markdown("Shapley values are a concept from game theory, attributing average marginal contributions to an outcome.  In this case, we look at the average marginal contribution of each factor to our target variable 'consumption'")
 
     # Plot Shapley values
