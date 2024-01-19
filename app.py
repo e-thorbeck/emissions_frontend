@@ -442,7 +442,7 @@ cost_per_sqft = total_cost / response_analytics[selected_campus]['total_sq_ft']
 emissions_sqft = (calculate_emissions(result, time_span)*1.06) / response_analytics[selected_campus]['total_sq_ft']
 
 col1, col2, col3 = st.columns(3)
-col1.metric("Predicted Emissions", round(emissions_sqft,5), "KG Co2 Per Square Foot")
+col1.metric("Predicted Emissions", f"{emissions_sqft:.7f}", "KG Co2 Per Square Foot")
 col2.metric("Projected Electricity Costs - Total", f"${format_value(round(total_cost,2))}", "AUD")
 col3.metric("Estimated Cost Per Square Foot", f"${(round(cost_per_sqft,4))}", "AUD")
 
