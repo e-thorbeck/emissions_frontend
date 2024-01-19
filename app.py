@@ -54,7 +54,9 @@ def format_value(value):
 
 st.markdown("""# Welcome to The UNICON Campus Emissions Predictor
 ### Predict carbon emissions at one of Australia's largest universities, and discover what factors influence emissions.
+
 """)
+st.markdown("""By Erik Thorbeck, Aime Rangel, and Ennia Castel""")
 st.markdown("""---""")
 st.sidebar.markdown(f"""
     # Select Your Campus Here
